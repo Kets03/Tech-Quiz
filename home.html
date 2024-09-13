@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    #profile {
+      position: fixed;
+      right: 30px;
+      top: 30px;
+      color: #444; 
+      text-align: center; 
+    }
+    #profile .fas.fa-user-circle {
+      font-size: 50px; 
+      color: black; 
+      margin-bottom: 10px;
+    }
+    #profile .username {
+      text-align: right;
+      text-transform: capitalize;
+      font-size: 20px; 
+      font-weight: bold; 
+      color: black; 
+    }
+    #logout {
+  display: none;
+  position: absolute;
+  background-color: #8fd3f4;
+  min-width: 130px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script src="script.js"></script>
+  <script>
+  $(document).ready(function() {
+    $.get('get_username.php', function(data) {
+      if (data === 'not_logged_in') {
+        window.location.href = 'index.php';
+      } else {
+        $('.username').text(data);
+      }
+    });
+  });
+  function myFunction() {
+  document.getElementById("logout").style.display = "block";
+}
+
+function logout() {
+    $.ajax({
+      url: 'logout.php',
+      type: 'POST',
+      success: function(){
+        window.location.href = 'index.php';
+      }
+    });
+  }
+</script>
+</head>
+
+<body>
+  <div class="icon-container" title="Home">
+    <div id="profile" onclick="myFunction()">
+      <i class='fas fa-user-circle'></i>
+      <div class="username">Username</div>
+      <div id="logout" onclick="logout()">Logout</div>
+    </div>
+    
+    <i class="fas fa-home" id="home-icon" onclick="goToHome()"></i> 
+
+    <span class="icon-name">Home</span>
+  </div>
+  <div class="icon-container" title="History">
+    <i class="fas fa-history" id="history-icon" onclick="checkHistory()"></i>
+    <span class="icon-name">History</span>
+  </div>
+  <div id="history-container"></div>
+  <div class="quiz-container">
+    <h1 >Tech Quiz</h1>
+    <br>
+    <div id="category-container">
+      <div class="row">
+        <div class="category-button" onclick="startQuiz('Guess_the_Programming_Language')">
+          <img src="HomePageImages\guess programming.jfif" alt="Programming Language">
+          <span class="category-name">Guess the Programming Language</span>
+        </div>
+        <div class="category-button" onclick="startQuiz('Guess_the_tech_fig')">
+          <img src="HomePageImages\tech fig.jfif" alt="Famous Tech Figures">
+          <span class="category-name">Famous Tech Figures</span>
+        </div>
+        <div class="category-button" onclick="startQuiz('Guess_Internet_slang')">
+          <img src="HomePageImages\internet_slag.png" alt="Internet Slang and Jargon">
+          <span class="category-name">Internet Slang and Jargon</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="category-button" onclick="startQuiz('Guess_the_Games')">
+          <img src="HomePageImages\game1.png" alt="Guess_Games">
+          <span class="category-name">Guess Games</span>
+        </div>
+        <div class="category-button" onclick="startQuiz('Guess_developmentTool')">
+          <img src="HomePageImages\Development_tools.png" alt="Development Tools">
+          <span class="category-name">Development Tools</span>
+        </div>
+        <div class="category-button" onclick="startQuiz('Guess_SocialMediaPlatform')">
+          <img src="HomePageImages\social media1.png" alt="Social Media Platforms">
+          <span class="category-name">Social Media Platforms</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="question-container">
+      <img id="question-image" alt="Question Image">
+      <p id="question-text"></p>
+      <div id="options-container"></div>
+    </div>
+    <br>
+    <div id="controls-container">
+      <button id="next-button" onclick="nextQuestion()">Skip</button>
+      <div id="timer-container">
+        <span id="timer-text">Time Left: <span id="timer">30</span></span>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
